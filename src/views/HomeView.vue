@@ -80,6 +80,15 @@ async function search() {
 </script>
 
 <style scoped>
+/* .container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+} */
+
 .container {
   min-height: 100vh;
   display: flex;
@@ -87,6 +96,8 @@ async function search() {
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease;
+  position: relative;
+  width: 100%;
 }
 
 .container.chat-mode {
@@ -100,7 +111,8 @@ async function search() {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  margin-bottom: 120px;
+  margin: 0 auto;
+  margin-bottom: 140px;
 }
 
 .chat-item {
@@ -149,20 +161,23 @@ async function search() {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-bottom: 15px;
   transition: all 0.3s ease;
 }
 
-.search-container.fixed-bottom {
+search-container.fixed-bottom {
   position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: var(--sidebar-width);
+  right: 0;
+  margin: 0 auto;
   background: #1a1a1a;
   border-radius: 8px;
   padding: 20px;
-  width: 100%;
   max-width: 800px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .search-box {

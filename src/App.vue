@@ -1,7 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Sidebar from '@/components/Sidebar.vue'
+</script>
 
 <template>
-  <router-view />
+  <div class="app-layout">
+    <Sidebar />
+    <main class="main-content">
+      <router-view />
+    </main>
+  </div>
 </template>
 
 <style>
@@ -13,7 +20,6 @@
 
 body {
   background: linear-gradient(180deg, #101010 30%, #2d2d2d 100%);
-  /* background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%); */
   min-height: 100vh;
   overflow-x: hidden;
   font-family:
@@ -23,6 +29,17 @@ body {
 #app {
   min-height: 100vh;
   background: transparent;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 15% 85%; /* 15% sidebar, 85% conteúdo */
+  min-height: 100vh;
+}
+
+.main-content {
+  width: 100%;
+  min-height: 100vh;
 }
 </style>
 
