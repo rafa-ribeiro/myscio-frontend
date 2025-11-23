@@ -17,4 +17,17 @@ export const searchDocuments = async (query: string) => {
   return response.data
 }
 
+export const uploadDocument = async (file: File) => {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const response = await apiClient.post('/documents/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+
+  return response.data
+}
+
 export default apiClient
