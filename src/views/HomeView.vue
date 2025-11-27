@@ -1,30 +1,42 @@
 <template>
-  <div class="container" :class="{ 'chat-mode': hasResults }">
+  <div class="home-container" :class="{ 'has-results': hasResults }">
+    <!-- Chat History -->
     <div v-if="hasResults" class="chat-history">
       <div v-for="(item, index) in history" :key="index" class="chat-item">
-        <div class="question-item">
+        <!-- Question -->
+        <div class="question-box">
           <p>{{ item.question }}</p>
         </div>
-        <div class="answer-item">
+
+        <!-- Answer -->
+        <div class="answer-box">
           <p>{{ item.answer }}</p>
         </div>
       </div>
     </div>
 
-    <div class="search-container" :class="{ 'fixed-bottom': hasResults }">
-      <input
-        v-model="query"
-        type="text"
-        class="search-box"
-        placeholder="Search on my documents..."
-        @keyup.enter="search"
-      />
+    <!-- Search Container -->
+    <div class="search-wrapper" :class="{ 'fixed-bottom': hasResults }">
+      <h1 v-if="!hasResults" class="main-title">Document Search</h1>
 
-      <button class="search-button" @click="search" :disabled="loading">
+      <div class="input-wrapper">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input
+          v-model="query"
+          @keyup.enter="search"
+          class="search-input"
+          placeholder="Search on my documents..."
+          type="text"
+        />
+      </div>
+
+      <button @click="search" :disabled="loading" class="search-button">
         {{ loading ? 'Searching...' : 'Search' }}
       </button>
 
-      <div v-if="error" class="error">{{ error }}</div>
+      <div v-if="error" class="error-box">
+        {{ error }}
+      </div>
     </div>
   </div>
 </template>
@@ -80,159 +92,175 @@ async function search() {
 </script>
 
 <style scoped>
-/* .container {
-  min-height: 100vh;
+.home-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
-} */
-
-.container {
+  justify-content: center;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 32px;
   transition: all 0.3s ease;
-  position: relative;
-  width: 100%;
 }
 
-.container.chat-mode {
+.home-container.has-results {
   justify-content: flex-start;
-  padding-top: 20px;
+  padding-top: 32px;
 }
 
 .chat-history {
   width: 100%;
-  max-width: 800px;
+  max-width: 768px;
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
-  margin: 0 auto;
-  margin-bottom: 140px;
+  margin-bottom: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .chat-item {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.question-item {
-  background: #1a1a1a;
+.question-box {
+  background: #f3f4f6;
   padding: 16px 20px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  border: 1px solid #2a2a2a;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
 }
 
-.question-item p {
-  color: #e0e0e0;
+.question-box p {
+  color: #1f2937;
+  font-weight: 500;
   font-size: 1rem;
   line-height: 1.5;
   margin: 0;
 }
 
-.answer-item {
-  background: #2a2a2a;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #3a3a3a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+.answer-box {
+  background: radial-gradient(circle at center, #ffffff 0%, #f0f2f5 100%);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
 }
 
-.answer-item p {
-  color: #f0f0f0;
+.answer-box p {
+  color: #374151;
   font-size: 1rem;
   line-height: 1.6;
   white-space: pre-wrap;
   margin: 0;
 }
 
-.answer-item:hover {
-  border-color: #4a7;
-  box-shadow: 0 2px 12px rgba(68, 170, 119, 0.2);
-}
-
-.search-container {
+.search-wrapper {
+  width: 100%;
+  max-width: 672px;
+  background: radial-gradient(circle at center, #ffffff 0%, #f0f2f5 100%);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  margin-bottom: 15px;
+  gap: 32px;
   transition: all 0.3s ease;
 }
 
-search-container.fixed-bottom {
-  position: fixed;
-  bottom: 20px;
-  left: var(--sidebar-width);
-  right: 0;
-  margin: 0 auto;
-  background: #1a1a1a;
-  border-radius: 8px;
-  padding: 20px;
-  max-width: 800px;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+.search-wrapper.fixed-bottom {
+  position: sticky;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 672px;
+  z-index: 100;
 }
 
-.search-box {
+.main-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1f2937;
+  text-align: center;
+  margin: 0 0 24px 0;
+}
+
+.input-wrapper {
+  position: relative;
   width: 100%;
-  padding: 1rem;
-  font-size: 1.2rem;
-  border: 2px solid #3a3a3a;
-  border-radius: 8px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-size: 1.875rem;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  height: 64px;
+  padding-left: 64px;
+  padding-right: 24px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  color: #1f2937;
+  font-family: 'Sora', sans-serif;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.search-input:focus {
   outline: none;
-  transition: 0.3s all;
-  background: #2a2a2a;
-  color: #e0e0e0;
-  font-family: inherit;
-}
-
-.search-box::placeholder {
-  color: #888;
-}
-
-.search-box:focus {
-  border-color: #4a7;
-  background: #333;
-  box-shadow: 0 0 10px rgba(68, 170, 119, 0.3);
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
 }
 
 .search-button {
-  margin-top: 30px;
-  padding: 12px 24px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: #4a7;
+  width: 100%;
+  padding: 16px 32px;
+  background: linear-gradient(to right, #ff7b00 0%, #e74c3c 100%);
   color: white;
+  font-weight: 800;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
-  transition: 0.3s all;
-  box-shadow: 0 4px 10px rgba(68, 170, 119, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
+  transition: all 0.3s ease;
+  font-family: 'Sora', sans-serif;
 }
 
 .search-button:hover:not(:disabled) {
-  background-color: #5b8;
-  box-shadow: 0 6px 15px rgba(68, 170, 119, 0.5);
+  box-shadow: 0 6px 16px rgba(255, 123, 0, 0.4);
   transform: translateY(-2px);
 }
 
 .search-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
-.error {
-  margin-top: 12px;
-  padding: 12px 20px;
-  background: rgba(220, 53, 69, 0.15);
-  color: #ff6b7a;
-  border-radius: 8px;
-  border: 1px solid rgba(220, 53, 69, 0.3);
+.error-box {
+  padding: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.875rem;
 }
 </style>
