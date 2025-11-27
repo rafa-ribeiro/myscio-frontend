@@ -20,7 +20,7 @@
       <h1 v-if="!hasResults" class="main-title">Document Search</h1>
 
       <div class="input-wrapper">
-        <span class="material-symbols-outlined search-icon">search</span>
+        <span class="material-icons-outlined search-icon">search</span>
         <input
           v-model="query"
           @keyup.enter="search"
@@ -31,7 +31,7 @@
       </div>
 
       <button @click="search" :disabled="loading" class="search-button">
-        {{ loading ? 'Searching...' : 'Search' }}
+        {{ loading ? 'SEARCHING...' : 'SEARCH' }}
       </button>
 
       <div v-if="error" class="error-box">
@@ -125,15 +125,16 @@ async function search() {
 }
 
 .question-box {
-  background: #f3f4f6;
+  background: var(--bg-question);
   padding: 16px 20px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
 }
 
 .question-box p {
-  color: #1f2937;
+  color: var(--text-primary);
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.5;
@@ -141,15 +142,16 @@ async function search() {
 }
 
 .answer-box {
-  background: radial-gradient(circle at center, #ffffff 0%, #f0f2f5 100%);
+  background: var(--bg-answer);
   padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e5e7eb;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
 }
 
 .answer-box p {
-  color: #374151;
+  color: var(--text-secondary);
   font-size: 1rem;
   line-height: 1.6;
   white-space: pre-wrap;
@@ -159,31 +161,34 @@ async function search() {
 .search-wrapper {
   width: 100%;
   max-width: 672px;
-  background: radial-gradient(circle at center, #ffffff 0%, #f0f2f5 100%);
+  background: var(--bg-card);
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
   transition: all 0.3s ease;
+  border: 1px solid var(--border-primary);
 }
 
 .search-wrapper.fixed-bottom {
-  position: sticky;
+  position: fixed;
   bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 256px;
+  right: 0;
+  margin: 0 auto;
   max-width: 672px;
   z-index: 100;
 }
 
 .main-title {
   font-size: 2.25rem;
-  font-weight: 800;
-  color: #1f2937;
+  font-weight: 700;
+  color: var(--text-primary);
   text-align: center;
-  margin: 0 0 24px 0;
+  margin: 0 0 8px 0;
+  transition: color 0.3s ease;
 }
 
 .input-wrapper {
@@ -193,74 +198,89 @@ async function search() {
 
 .search-icon {
   position: absolute;
-  left: 20px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  color: #6b7280;
-  font-size: 1.875rem;
+  color: var(--text-tertiary);
+  font-size: 1.5rem;
   pointer-events: none;
 }
 
 .search-input {
   width: 100%;
-  height: 64px;
-  padding-left: 64px;
-  padding-right: 24px;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
+  height: 56px;
+  padding-left: 52px;
+  padding-right: 16px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-secondary);
   border-radius: 12px;
-  font-size: 1.25rem;
-  color: #1f2937;
-  font-family: 'Sora', sans-serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-family: 'Carlito', 'Calibri', sans-serif;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .search-input::placeholder {
-  color: #9ca3af;
+  color: var(--text-tertiary);
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #60a5fa;
+  border-color: var(--border-focus);
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+:root.dark .search-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(239, 108, 0, 0.2);
 }
 
 .search-button {
   width: 100%;
-  padding: 16px 32px;
-  background: linear-gradient(to right, #ff7b00 0%, #e74c3c 100%);
+  padding: 14px 32px;
+  background: var(--bg-button);
   color: white;
-  font-weight: 800;
-  font-size: 1.25rem;
-  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1rem;
   letter-spacing: 0.05em;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
+  box-shadow: var(--shadow-button);
   transition: all 0.3s ease;
-  font-family: 'Sora', sans-serif;
+  font-family: 'Carlito', 'Calibri', sans-serif;
 }
 
 .search-button:hover:not(:disabled) {
-  box-shadow: 0 6px 16px rgba(255, 123, 0, 0.4);
-  transform: translateY(-2px);
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(249, 149, 83, 0.4);
+}
+
+:root.dark .search-button:hover:not(:disabled) {
+  box-shadow: 0 6px 16px rgba(239, 108, 0, 0.5);
 }
 
 .search-button:disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
 .error-box {
-  padding: 16px;
+  padding: 14px;
   background: #fef2f2;
   border: 1px solid #fecaca;
   color: #dc2626;
   border-radius: 12px;
   text-align: center;
   font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+:root.dark .error-box {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.3);
+  color: #fca5a5;
 }
 </style>

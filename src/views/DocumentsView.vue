@@ -20,7 +20,7 @@
         />
 
         <label for="file-upload" class="upload-label">
-          <span class="material-symbols-outlined upload-icon">folder_open</span>
+          <span class="material-icons-outlined upload-icon">folder_open</span>
           <span class="upload-text">
             {{ selectedFile ? selectedFile.name : 'Click to select or drag and drop a file' }}
           </span>
@@ -29,7 +29,7 @@
       </div>
 
       <button v-if="selectedFile" @click="uploadFile" :disabled="uploading" class="upload-button">
-        {{ uploading ? 'Uploading...' : 'Upload File' }}
+        {{ uploading ? 'UPLOADING...' : 'UPLOAD FILE' }}
       </button>
 
       <div v-if="uploadSuccess" class="success-box">✓ File uploaded successfully!</div>
@@ -56,7 +56,7 @@ const isDragging = ref(false)
 function handleFileSelect(event: Event) {
   const target = event.target as HTMLInputElement
   if (target.files && target.files.length > 0) {
-    selectedFile.value = target.files[0]
+    selectedFile.value = target?.files[0] ?? null
     uploadSuccess.value = false
     uploadError.value = ''
   }
@@ -65,7 +65,7 @@ function handleFileSelect(event: Event) {
 function handleDrop(event: DragEvent) {
   isDragging.value = false
   if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
-    selectedFile.value = event.dataTransfer.files[0]
+    selectedFile.value = event.dataTransfer?.files[0] ?? null
     uploadSuccess.value = false
     uploadError.value = ''
   }
@@ -111,49 +111,56 @@ async function uploadFile() {
 .upload-card {
   width: 100%;
   max-width: 672px;
-  background: radial-gradient(circle at center, #ffffff 0%, #f0f2f5 100%);
+  background: var(--bg-card);
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
 }
 
 .page-title {
   font-size: 2.25rem;
-  font-weight: 800;
-  color: #1f2937;
+  font-weight: 700;
+  color: var(--text-primary);
   text-align: center;
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .page-subtitle {
   text-align: center;
-  color: #4b5563;
-  font-size: 1.125rem;
-  margin: -16px 0 0 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: -8px 0 8px 0;
+  transition: color 0.3s ease;
 }
 
 .upload-area {
-  border: 2px dashed #d1d5db;
+  border: 2px dashed var(--border-secondary);
   border-radius: 12px;
-  padding: 64px 40px;
+  padding: 48px 32px;
   text-align: center;
-  background: #f9fafb;
+  background: var(--bg-input);
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .upload-area:hover {
-  border-color: #9ca3af;
-  background: #f3f4f6;
+  border-color: var(--text-tertiary);
 }
 
 .upload-area.drag-over {
-  border-color: #60a5fa;
-  background: #eff6ff;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+  border-color: var(--border-focus);
+  background: rgba(96, 165, 250, 0.05);
+}
+
+:root.dark .upload-area.drag-over {
+  border-color: var(--border-focus);
+  background: rgba(239, 108, 0, 0.1);
 }
 
 .file-input-hidden {
@@ -164,70 +171,86 @@ async function uploadFile() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   cursor: pointer;
 }
 
 .upload-icon {
-  font-size: 4rem;
-  color: #9ca3af;
+  font-size: 3.5rem;
+  color: var(--text-tertiary);
+  transition: color 0.3s ease;
 }
 
 .upload-text {
-  color: #374151;
-  font-size: 1.25rem;
+  color: var(--text-secondary);
+  font-size: 1.125rem;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .upload-hint {
-  color: #6b7280;
+  color: var(--text-tertiary);
   font-size: 0.875rem;
+  transition: color 0.3s ease;
 }
 
 .upload-button {
   width: 100%;
-  padding: 16px 32px;
-  background: linear-gradient(to right, #ff7b00 0%, #e74c3c 100%);
+  padding: 14px 32px;
+  background: var(--bg-button);
   color: white;
-  font-weight: 800;
-  font-size: 1.25rem;
-  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1rem;
   letter-spacing: 0.05em;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
+  box-shadow: var(--shadow-button);
   transition: all 0.3s ease;
-  font-family: 'Sora', sans-serif;
+  font-family: 'Carlito', 'Calibri', sans-serif;
 }
 
 .upload-button:hover:not(:disabled) {
-  box-shadow: 0 6px 16px rgba(255, 123, 0, 0.4);
-  transform: translateY(-2px);
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .upload-button:disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
 .success-box {
-  padding: 16px;
+  padding: 14px;
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
   color: #16a34a;
   border-radius: 12px;
   text-align: center;
   font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+:root.dark .success-box {
+  background: rgba(22, 163, 74, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #86efac;
 }
 
 .error-box {
-  padding: 16px;
+  padding: 14px;
   background: #fef2f2;
   border: 1px solid #fecaca;
   color: #dc2626;
   border-radius: 12px;
   text-align: center;
+  transition: all 0.3s ease;
+}
+
+:root.dark .error-box {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.3);
+  color: #fca5a5;
 }
 </style>
