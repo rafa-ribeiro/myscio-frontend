@@ -4,8 +4,8 @@ import Sidebar from '@/components/Sidebar.vue'
 
 <template>
   <div class="app-layout">
-    <Sidebar />
-    <main class="main-content">
+    <Sidebar class="app-layout__sidebar" />
+    <main class="main-content app-layout__content">
       <router-view />
     </main>
   </div>
@@ -33,8 +33,17 @@ body {
 
 .app-layout {
   display: grid;
-  grid-template-columns: 15% 85%; /* 15% sidebar, 85% conteúdo */
+  grid-template-areas: 'sidebar . content .';
+  grid-template-columns: 260px 1fr 800px 1fr;
   min-height: 100vh;
+}
+
+.app-layout__sidebar {
+  grid-area: sidebar;
+}
+
+.app-layout__content {
+  grid-area: content;
 }
 
 .main-content {

@@ -54,7 +54,7 @@ const isDragging = ref(false)
 function handleFileSelect(event: Event) {
   const target = event.target as HTMLInputElement
   if (target.files && target.files.length > 0) {
-    selectedFile.value = target.files[0]
+    selectedFile.value = target?.files[0] ?? null
     uploadSuccess.value = false
     uploadError.value = ''
   }
@@ -63,7 +63,7 @@ function handleFileSelect(event: Event) {
 function handleDrop(event: DragEvent) {
   isDragging.value = false
   if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
-    selectedFile.value = event.dataTransfer.files[0]
+    selectedFile.value = event.dataTransfer?.files[0] ?? null
     uploadSuccess.value = false
     uploadError.value = ''
   }
